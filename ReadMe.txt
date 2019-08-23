@@ -1,31 +1,41 @@
-PtokaX 0.5.2.1
+PtokaX 0.5.2.1 mod 2
 ---------------
 
-This is PtokaX version without gui able to run from console or as windows service.
-You can use for that version config files from gui version of PtokaX or you can create own config files, see examples in cfg.example directory.
+Приветствую тебя, глубокоуважаемый анонимус! Ты только что скачал PtokaX 0.5.2.1, модифицированную под собственные нужды, а затем выложенную в сеть Интернет неким alex82. С полным списком изменений можно ознакомиться в файле Changelog-alex82.txt. Скачать последнюю версию сборки можно здесь: http://mydc.ru/topic5423.html
 
-Command line commands available:
--c <configdir>		- absolute path to PtokaX config directory (where will PtokaX have cfg, logs, scripts and texts directories).
--d					- run as daemon.
--h					- show help.
--m					- show PtokaX configuration menu.
--p <pidfile>		- path with filename where PtokaX PID will be stored.
--v					- show PtokaX version with build date and time.
-/generatexmllanguage	- generate english language example file.
+Параметры командной строки:
+-c <configdir>	- абсолютный путь к директории конфигурации PtokaX (где лежат папки cfg, logs, scripts, texts, и.т.д.).
+-i <имя службы>	- установить как системную службу.
+-u <имя службы>	- удалить службу.
+-s <имя службы>	- запустить как службу.
+-h			- показать справку.
+-m			- показать меню настройки PtokaX.
+-p <pidfile>- путь и имя pid-файла.
+-v			- показать версию PtokaX (включая номер и дату сборки).
 
-In case when that version not start for you check logs directory, in most cases it log problem.
+Важные замечания:
+	Версия сборки для 32-разрядных систем несовместима с библиотеками от оригинальной версии. Вместо них следует использовать библиотеки от Lua-AIO или RusHub. По этой же причине могут не работать некоторые скрипты - имена библиотек оригинальной PtokaX отличаются от нормальных. К скриптам, изначально написанным под linux'овую PtokaX это не относится, поскольку под linux'ом имена библиотек всегда нормальные. В остальных случаях необходимо вручную изменить PXLfs на lfs во всех скриптах.
+	
+	База IP-To-Country, использовавшаяся в более ранних версиях PtokaX, к текущей версии не подходит. И можете даже не пробовать переименовывать ip-to-country.csv в IPToCountry.csv - новая база имеет другой формат. Скачать базы IP-To-Country, совместимые с данной версией PtokaX, можно по этим ссылкам:
+	http://software77.net/geo-ip/?DL=1 - для адресов IPV4
+	http://software77.net/geo-ip/?DL=7 - для адресов IPV6
+	
+Установка под linux (протестировано на Debian):
+	Устанавливаем утилиты, библиотеки и модули Lua:
+	aptitude -y install g++ make zlib1g zlib1g-dev lua5.1 liblua5.1-0 liblua5.1-0-dev liblua5.1-filesystem0 liblua5.1-socket2 lua5.1-socket
+	
+	Собираем и устанавливаем PtokaX:
+	cd /path/to/ptokax && make ptokax install clean
+	Для сборки PtokaX, хранящей пароли в зашифрованном виде, необходимо заменить ptokax на ptokax_hashpass
+	
+	Управление:
+	service ptokax start	- запуск
+	service ptokax stop		- остановка
+	service ptokax restart	- перезапуск
+	service ptokax status	- статус (запущена/не запущена)
+	
+	По умолчанию PtokaX будет работать от root'а. Изменить можно в /etc/init.d/ptokax.
 
-When no config dir is specified then PtokaX running from console use actual directory, PtokaX running as daemon use current_user_home/.PtokaX !
+Домашняя страница: http://www.PtokaX.org
 
-Homepage: http://www.PtokaX.org
-
-PtokaX Forum: http://forum.PtokaX.org
-
-PtokaX Wiki: http://wiki.PtokaX.org
-
-Please report all bugs on forum or to PPK@PtokaX.org or to me (PPK) on 'PtokaX Dev Hub' dchub://PXdev.CzDC.org:2002
-
-Note: This version have Lua scripting interface incompatible with all scripts for 0.3.6.0c and older !
-Note: IP to Country database files are available on http://software77.net/geo-ip/ for IPv4 you need 'IPV4 CSV (gz)' and for IPV6 'IPV6 Range (gz)', unpack them to PtokaX/cfg directory.
-
-Latest PtokaX changelog: http://wiki.PtokaX.org/doku.php?id=changelog
+Русскоязычный форум: http://MyDC.ru
