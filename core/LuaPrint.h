@@ -1,0 +1,1 @@
+int LuaPrint (lua_State *L);

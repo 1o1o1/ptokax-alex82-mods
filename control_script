@@ -1,0 +1,68 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          ptokax
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop/restart the services for PtokaX DC Hub.
+### END INIT INFO
+
+PXUSER=root
+PXPATH=/etc/ptokax
+PXBIN=/usr/bin/ptokax
+
+px_start() {
+	if [ -x $PXBIN ]; then
+		if [ "$(pidof $PXBIN)" != "" ]; then
+			echo "PtokaX already running!"
+		else
+			ulimit -n 29240
+			su -p -c "$PXBIN -d -c $PXPATH" $PXUSER
+		fi
+	fi
+}
+px_stop() {
+	if [ "$(pidof $PXBIN)" != "" ]; then
+		kill -15 $(pidof $PXBIN)
+		echo "PtokaX stopping..."
+	else
+		echo "PtokaX not running!"
+	fi
+}
+px_restart() {
+	px_stop
+	while [ "$(pidof $PXBIN)" != "" ]; do
+		sleep 1
+	done
+	px_start
+}
+
+px_status() {
+	if [ "$(pidof $PXBIN)" != "" ]; then
+		echo "PtokaX running with PID(s): $(pidof $PXBIN)"
+	else
+		echo "PtokaX not running!"
+	fi 
+}
+case "$1" in
+'start')
+px_start
+;;
+'stop')
+px_stop
+;;
+'restart')
+px_restart
+;;
+'status')
+px_status
+;;
+*)
+echo "Usage start|stop|restart|status"
+
+esac
+
+exit 0
+
